@@ -7,7 +7,7 @@ import java.io.Serializable;
 @Table(name = "users1")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column
