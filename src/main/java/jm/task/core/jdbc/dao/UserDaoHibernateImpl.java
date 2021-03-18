@@ -17,14 +17,13 @@ public class UserDaoHibernateImpl implements UserDao {
 
     }
 
-    Util util = new Util();
 
     @Override
     public void createUsersTable() {
 
         Transaction transaction = null;
 
-        try (SessionFactory sessionFactory = util.getSessionFactory();
+        try (SessionFactory sessionFactory = Util.getSessionFactory();
              Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             String sqlNewTable = "CREATE TABLE IF NOT EXISTS users1 (id BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL, " +
@@ -48,7 +47,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public void dropUsersTable() {
         Transaction transaction = null;
 
-        try (SessionFactory sessionFactory = util.getSessionFactory();
+        try (SessionFactory sessionFactory = Util.getSessionFactory();
              Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
 
@@ -74,7 +73,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public void saveUser(String name, String lastName, byte age) {
         Transaction transaction = null;
 
-        try (SessionFactory sessionFactory = util.getSessionFactory();
+        try (SessionFactory sessionFactory = Util.getSessionFactory();
              Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             session.persist(new User(name, lastName, age));
@@ -91,7 +90,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public void removeUserById(long id) {
         Transaction transaction = null;
 
-        try (SessionFactory sessionFactory = util.getSessionFactory();
+        try (SessionFactory sessionFactory = Util.getSessionFactory();
              Session session = sessionFactory.openSession();) {
             transaction = session.beginTransaction();
             User user = session.load(User.class, id);
@@ -111,25 +110,25 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public List<User> getAllUsers() {
 
-        Transaction transaction = null;
+        //Transaction transaction = null;
         List<User> list = null;
 
-        try (SessionFactory sessionFactory = util.getSessionFactory();
+        try (SessionFactory sessionFactory = Util.getSessionFactory();
              Session session = sessionFactory.openSession();) {
-            transaction = session.beginTransaction();
+            //transaction = session.beginTransaction();
 
             Query<User> query = session.createQuery("FROM User ");
             list = query.list();
 
             System.out.println(Arrays.toString(list.toArray()));
-            transaction.commit();
+            //transaction.commit();
 
-        } catch (HibernateException e) {
-            if (transaction != null) {
-                transaction.rollback();
-                e.printStackTrace();
-            }
-        }
+//        } catch (HibernateException e) {
+//            if (transaction != null) {
+//                transaction.rollback();
+//                e.printStackTrace();
+//            }
+       }
         return list;
     }
 
@@ -137,7 +136,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public void cleanUsersTable() {
         Transaction transaction = null;
 
-        try (SessionFactory sessionFactory = util.getSessionFactory();
+        try (SessionFactory sessionFactory = Util.getSessionFactory();
              Session session = sessionFactory.openSession();) {
             transaction = session.beginTransaction();
 

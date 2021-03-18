@@ -18,8 +18,12 @@ public class Util {
             " UTC&allowPublicKeyRetrieval=true";
     private static final String DB_USER_NAME = "root";
     private static final String DB_PASSWORD = "rcjPp2014ml";
+    private static SessionFactory sessionFactory = null;
+    private Util(){
 
-    public Connection getConnection() {
+    }
+
+    public static Connection getConnection() {
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(DB_URL, DB_USER_NAME, DB_PASSWORD);
@@ -31,7 +35,8 @@ public class Util {
         return connection;
     }
 
-    public SessionFactory getSessionFactory() {
+    public static SessionFactory getSessionFactory() {
+        if(sessionFactory == null) {
         Properties properties = new Properties();
         properties.setProperty(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
         properties.setProperty(Environment.HBM2DDL_AUTO, "update");
@@ -45,46 +50,10 @@ public class Util {
 
         configuration.addAnnotatedClass(User.class);
 
-        SessionFactory sessionFactory = configuration.buildSessionFactory();
-
+        return configuration.buildSessionFactory();
+    }
         return sessionFactory;
     }
-
 }
-//    if (sessionFactory == null) {
-//        try {
-//            StandardServiceRegistryBuilder registryBuilder = new StandardServiceRegistryBuilder();
-//
-//            Map<String,String> settingsMySql = new HashMap<>();
-//            settingsMySql.put("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
-//            properties.setProperty(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
-//            settingsMySql.put("hibernate.connection.url", DB_URL);
-//            settingsMySql.put("hibernate.connection.username", DB_USER_NAME);
-//            settingsMySql.put("hibernate.connection.password", DB_PASSWORD);
-//            settingsMySql.put("hibernate.current_session_context_class", "thread");
-//            settingsMySql.put("hibernate.show_sql", "true");
-//            settingsMySql.put("hibernate.format_sql", "true");
-//            settingsMySql.put("hibernate.hbm2ddl.auto", "update");
-
-//            ServiceRegistry serviceRegistry = (ServiceRegistry) new StandardServiceRegistryBuilder().applySettings(settingsMySql).build();
-//            MetadataSources metadataSources = new MetadataSources((org.hibernate.service.ServiceRegistry) serviceRegistry);
-//
-//            Metadata metadata = metadataSources.buildMetadata();
-//
-//            SessionFactory sessionFactory = metadata.getSessionFactoryBuilder().build();
-//            Session session = sessionFactory.getCurrentSession();
 
 
-//            registryBuilder.applySettings(settingsMySql);
-//            registry = registryBuilder.build();
-//            MetadataSources sources = new MetadataSources(registry).addAnnotatedClass(User.class);
-//
-//            sessionFactory = sources.buildMetadata().buildSessionFactory();
-//        } catch (Exception e) {
-//            System.out.println("SessionFactory creation failed");
-//            if (registry != null) {
-//                StandardServiceRegistryBuilder.destroy(registry);
-//            }
-//        }
-//    }
-//    return sessionFactory;

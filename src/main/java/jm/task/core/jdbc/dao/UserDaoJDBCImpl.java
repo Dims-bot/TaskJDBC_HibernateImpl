@@ -12,7 +12,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public UserDaoJDBCImpl() {
 
     }
-    Util util = new Util();
+    //Util util = new Util();
 
 
     public void createUsersTable() {
@@ -24,7 +24,7 @@ public class UserDaoJDBCImpl implements UserDao {
                 "  PRIMARY KEY (`Id`))\n" +
                 "ENGINE = InnoDB\n" +
                 "DEFAULT CHARACTER SET = utf8;";
-        try (Connection connection = util.getConnection();
+        try (Connection connection = Util.getConnection();
              Statement statement = connection.createStatement();)
         {
             statement.executeUpdate(sqlNewTable);
@@ -39,7 +39,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void dropUsersTable() {
         String sqlDropTable = "drop table db113.users1;";
-        try (Connection connection = util.getConnection();
+        try (Connection connection = Util.getConnection();
              Statement statement = connection.createStatement();)
         {
             statement.executeUpdate(sqlDropTable);
@@ -55,7 +55,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void saveUser(String name, String lastName, byte age) {
         String sqlSaveUser = "INSERT INTO DB113.USERS1 (NAME, LASTNAME, AGE) VALUES(?, ?, ?)";
-        try(Connection connection = util.getConnection();
+        try(Connection connection = Util.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlSaveUser);
         )
         {
@@ -73,7 +73,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void removeUserById(long id) {
         String sqlSaveUser = "DELETE FROM DB113.USERS1 WHERE ID=(?)";
-        try(Connection connection = util.getConnection();
+        try(Connection connection = Util.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlSaveUser);
         )
         {
@@ -90,7 +90,7 @@ public class UserDaoJDBCImpl implements UserDao {
         List<User> userList = new ArrayList<>();
         String sqlGetAllUsers = "SELECT ID, NAME, LASTNAME, AGE FROM DB113.USERS1;";
 
-        try (Connection connection = util.getConnection();
+        try (Connection connection = Util.getConnection();
              Statement statement = connection.createStatement();) {
             ResultSet resultSet = statement.executeQuery(sqlGetAllUsers);
             while (resultSet.next()) {
@@ -112,7 +112,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void cleanUsersTable() {
         String sqlDropTable = "TRUNCATE TABLE db113.users1;";
-        try (Connection connection = util.getConnection();
+        try (Connection connection = Util.getConnection();
              Statement statement = connection.createStatement();)
         {
             statement.executeUpdate(sqlDropTable);
